@@ -17,7 +17,7 @@ class PostController extends Controller
     public function index()
     {
         //
-        $posts=Post::all;
+        $posts=Post::all();
         return view('post.index',['posts'=>$posts]);
     }
 
@@ -44,16 +44,16 @@ class PostController extends Controller
         $params=$request->all();
 
         $rules=[
-            'user_id'='integer|required',
-            'title'='required',
-            'content'='required'
+            'user_id'=>'integer|required',
+            'title'=>'required',
+            'content'=>'required',
 
         ];
         $message=[
             'user_id.integer'=>'System Error',
-            'user_id.require'=>'System Error',
-            'title.require'=>'タイトルが入力されていません',
-            'content.require'=>'内容が入力されていません'
+            'user_id.required'=>'System Error',
+            'title.required'=>'タイトルが入力されていません',
+            'content.required'=>'内容が入力されていません',
         ];
         $validator=Validator::make($params, $rules, $message);
 
