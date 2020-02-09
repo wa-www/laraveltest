@@ -12,7 +12,8 @@
 */
 
 Route::get('/', function () {
+    // return ('welcome'); 
     return view('welcome');
 });
 
-Route::resource('/post','PostController');
+Route::resource('post','PostController');
