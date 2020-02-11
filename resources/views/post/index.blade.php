@@ -15,3 +15,6 @@
   コンテントです
   部品入れます
 @endsection
+
+{{-- <p class="keisyo">こkに内容のテンプレートの継承します</p>
+@include('post.create') --}}

@@ -57,10 +57,11 @@ class PostController extends Controller
         ];
         $validator=Validator::make($params, $rules, $message);
 
-        if ($validator->false()){
+        if ($validator->fails()){
             return redirect('/post')
             ->withErrors($validator)
             ->withInput();
+            \Debugbar::info($posts);
         }else{
             unset($params['_token']);
             $post->user_id = $request->user_id;
@@ -81,6 +82,8 @@ class PostController extends Controller
     public function show($id)
     {
         //
+        $post=Post::find($id);
+        return view('post.show',['post'=>$post]);
     }
 
     /**
@@ -92,6 +95,8 @@ class PostController extends Controller
     public function edit($id)
     {
         //
+        $post=Post::find($id);
+        return view('post.edit',['form'=>$post]);
     }
 
     /**
@@ -104,6 +109,7 @@ class PostController extends Controller
     public function update(Request $request, $id)
     {
         //
+        $post=Post::find($id);
     }
 
     /**
