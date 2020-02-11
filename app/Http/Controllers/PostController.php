@@ -96,7 +96,7 @@ class PostController extends Controller
     {
         //
         $post=Post::find($id);
-        return view('post.edit',['form'=>$post]);
+        return view('post.edit',['post'=>$post]);
     }
 
     /**
@@ -110,7 +110,36 @@ class PostController extends Controller
     {
         //
         $post=Post::find($id);
+        $params=$request->all();
+        //バリデーションはモデルで行う
+        //Validator::make(params,バリデーション内容,エラーメッセージ)
+        $rules=[
+            'user_id'=>'integer|required',
+            'title'=>'required',
+            'content'=>'required',
+        ];
+        $errormes=[
+            'user_id.integer'=>'System Error',
+            'user_id.required'=>'System Error',
+            'title.required'=>'タイトルが入力されていません',
+            'content.required'=>'内容が入力されていません',
+
+        ];
+        $validation=Validator::make($params,$rules,$errormes);
+        //バリデーション通らなかった時と通った時
+        if($validation->fails()){
+            return redirect('/')
+                ->withErrors($validation)
+                ->withInput();
+        }else{
+            unset($params['_token']);
+            $post->user_id = $request->user_id;
+            $post->title = $request->title;
+            $post->content = $request->content;
+            $post->save();
+            return redirect('/post');
     }
+}
 
     /**
      * Remove the specified resource from storage.
@@ -121,7 +150,7 @@ class PostController extends Controller
     public function destroy($id)
     {
         //
-        $post=Post::find($id)->delete();
+        Post::find($id)->delete();
         return redirect('\post');
     }
 }
